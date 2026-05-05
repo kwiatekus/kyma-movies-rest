@@ -38,3 +38,4 @@ jobs:
           mount-service-binding-secret: object-store-reference-binding
           kubeconfig: "${{ steps.oidc.outputs.kubeconfig }}"
           env-from-file: .env
+          append-output-path: /swagger-ui.html
