@@ -1,0 +1,8 @@
+apiVersion: services.cloud.sap.com/v1
+kind: ServiceInstance
+metadata:
+  name: object-store-instance
+  namespace: movies-rest
+spec:
+  serviceOfferingName: objectstore
+  servicePlanName: standard

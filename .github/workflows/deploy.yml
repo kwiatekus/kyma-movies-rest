@@ -1,0 +1,40 @@
+name: Deploy movies-api example
+
+permissions:
+  id-token: write
+  contents: read
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Kyma CLI
+        uses: kyma-project/setup-kyma-cli@v1.0.1
+
+      - name: "get kubeconfig"
+        id: oidc
+        uses: kyma-project/setup-kyma-cli/kubeconfig@v1.0.1
+        with:
+          audience: "kwiatekus-movies-rest"
+          api-server-url: "${{ secrets.SERVER }}"
+          ca-crt: "${{ secrets.CA_CRT }}"
+          id-token-auto-refresh: "true"
+
+      - uses: kyma-project/setup-kyma-cli/app-push@v1.0.1
+        with:
+          name: kwiatekus-movies-rest
+          namespace: movies-rest
+          code-path: .
+          container-port: "8080"
+          expose: "true"
+          istio-inject: "true"
+          mount-service-binding-secret: object-store-reference-binding
+          kubeconfig: "${{ steps.oidc.outputs.kubeconfig }}"
+          env-from-file: .env
