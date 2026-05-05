@@ -16,18 +16,18 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Setup Kyma CLI
-        uses: kyma-project/setup-kyma-cli@v1
+        uses: kyma-project/setup-kyma-cli@main
 
       - name: "get kubeconfig"
         id: oidc
-        uses: kyma-project/setup-kyma-cli/kubeconfig@v1
+        uses: kyma-project/setup-kyma-cli/kubeconfig@main
         with:
           audience: "kwiatekus-movies-rest"
           api-server-url: "${{ secrets.SERVER }}"
           ca-crt: "${{ secrets.CA_CRT }}"
           id-token-auto-refresh: "true"
 
-      - uses: kyma-project/setup-kyma-cli/app-push@v1
+      - uses: kyma-project/setup-kyma-cli/app-push@main
         with:
           name: kwiatekus-movies-rest
           namespace: movies-rest
