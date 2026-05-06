@@ -15,8 +15,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup Kyma CLI
-        uses: kyma-project/setup-kyma-cli@v1.1.0
+      # - name: Setup Kyma CLI
+      #   uses: kyma-project/setup-kyma-cli@v1.1.0
 
       - name: "get kubeconfig"
         id: oidc
