@@ -16,22 +16,26 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Setup Kyma CLI
-        uses: kyma-project/setup-kyma-cli@v1.1.0
+        uses: kyma-project/setup-kyma-cli@v1
 
       - name: "get kubeconfig"
         id: oidc
-        uses: kyma-project/setup-kyma-cli/kubeconfig@v1.1.0
+        uses: kyma-project/setup-kyma-cli/kubeconfig@v1
         with:
           audience: "kwiatekus-movies-rest"
           api-server-url: "${{ secrets.SERVER }}"
           ca-crt: "${{ secrets.CA_CRT }}"
           id-token-auto-refresh: "true"
 
-      - uses: kyma-project/setup-kyma-cli/app-push@v1.1.0
+      - name: Set short SHA
+        run: echo "SHORT_SHA=${GITHUB_SHA::7}" >> $GITHUB_ENV
+
+      - uses: kyma-project/setup-kyma-cli/app-push@v1
         with:
           name: kwiatekus-movies-rest
           namespace: movies-rest
           code-path: .
+          build-tag: "${{ env.SHORT_SHA }}"
           container-port: "8080"
           expose: "true"
           istio-inject: "true"
